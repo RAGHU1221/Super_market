@@ -18,7 +18,7 @@ dependencies:
 
   # Networking
   http: ^1.1.0
-  connectivity_plus: ^5.0.2
+  connectivity_plus: ^7.0.0
 
   # Local key-value storage (server URL, token, settings)
   shared_preferences: ^2.2.2
