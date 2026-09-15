@@ -11,7 +11,12 @@ defaults:
 
 jobs:
   build-windows:
-    runs-on: windows-latest
+    # Pinned (not windows-latest): the windows-latest image now ships Visual
+    # Studio 2026, which Flutter's CMake generator detection doesn't
+    # recognize yet, so it falls back to a nonexistent "VS 16 2019" generator
+    # and the build fails (https://github.com/flutter/flutter/issues/178648).
+    # windows-2022 still has VS2022, which Flutter detects correctly.
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
 
