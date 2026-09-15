@@ -5,6 +5,10 @@ on:
     branches: [ main ]
   workflow_dispatch: {}
 
+defaults:
+  run:
+    working-directory: flutter_app
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -41,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SupermarketPOS-windows
-          path: SupermarketPOS-windows.zip
+          path: flutter_app\SupermarketPOS-windows.zip
 
       - name: Install Inno Setup
         run: choco install innosetup -y
@@ -56,4 +60,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SupermarketPOS-Setup
-          path: installer\Output\*.exe
+          path: flutter_app\installer\Output\*.exe
