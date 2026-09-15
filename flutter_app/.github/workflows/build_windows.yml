@@ -1,0 +1,59 @@
+name: Build Windows App
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: Enable Windows desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Generate Windows platform scaffold
+        # This repo keeps only lib/ + pubspec.yaml under source control; the
+        # windows/ (CMake/Visual Studio) platform folder is regenerated fresh
+        # on every build so it always matches the Flutter version above.
+        run: flutter create --platforms=windows --project-name supermarket_pos .
+
+      - name: Get packages
+        run: flutter pub get
+
+      - name: Build Windows release
+        run: flutter build windows --release
+
+      - name: Zip the build output
+        run: |
+          Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath SupermarketPOS-windows.zip
+        shell: pwsh
+
+      - name: Upload build artifact (zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SupermarketPOS-windows
+          path: SupermarketPOS-windows.zip
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+        shell: pwsh
+
+      - name: Build installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\setup.iss
+        shell: pwsh
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SupermarketPOS-Setup
+          path: installer\Output\*.exe

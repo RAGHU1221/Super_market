@@ -1,0 +1,58 @@
+name: supermarket_pos
+description: Offline-first Supermarket POS billing app (Windows desktop) that syncs with the Supermarket Suite web admin.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # Local offline database (desktop uses sqflite_common_ffi)
+  sqflite_common_ffi: ^2.3.0
+  path: ^1.8.3
+  path_provider: ^2.1.1
+
+  # Networking
+  http: ^1.1.0
+  connectivity_plus: ^5.0.2
+
+  # Local key-value storage (server URL, token, settings)
+  shared_preferences: ^2.2.2
+
+  # IDs for offline sale sync_uid
+  uuid: ^4.2.2
+
+  # Currency / date formatting
+  intl: ^0.19.0
+
+  # Receipt PDF generation + printing (thermal 80mm & A4, via system print dialog)
+  pdf: ^3.10.7
+  printing: ^5.11.1
+
+  # State management
+  provider: ^6.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fonts/
+  # Tamil font for receipt PDFs (thermal/A4 printing) + UI text.
+  # 1) Download "Noto Sans Tamil" (Regular + Bold) from Google Fonts:
+  #    https://fonts.google.com/noto/specimen/Noto+Sans+Tamil
+  # 2) Save as assets/fonts/NotoSansTamil-Regular.ttf and assets/fonts/NotoSansTamil-Bold.ttf
+  # 3) Uncomment the "fonts:" block below.
+  # fonts:
+  #   - family: NotoSansTamil
+  #     fonts:
+  #       - asset: assets/fonts/NotoSansTamil-Regular.ttf
+  #       - asset: assets/fonts/NotoSansTamil-Bold.ttf
+  #         weight: 700
